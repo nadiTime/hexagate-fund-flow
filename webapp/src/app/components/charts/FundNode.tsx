@@ -28,14 +28,14 @@ export const FundNode: FC<NodeProps<AddressNodeData>> = (node) => {
           borderRadius: "5px",
           border: "1px solid #D7F0FD",
           color: "#000",
-          fontSize: "12px",
+          fontSize: "14px",
         }}
       >
         {data.name && <div style={{ fontWeight: "bold" }}>{data.name}</div>}
         <div
           style={{
             whiteSpace: "nowrap",
-            width: "180px",
+            width: "160px",
             overflow: "hidden",
             textOverflow: "ellipsis",
           }}
