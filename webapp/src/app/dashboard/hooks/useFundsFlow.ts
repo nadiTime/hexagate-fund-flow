@@ -7,9 +7,10 @@ import { Edge, MarkerType, Node } from "reactflow";
 
 type FundsFlowData = {
   readonly isLoading?: boolean;
-  isError?: boolean;
+  readonly isError?: boolean;
   readonly nodes: Node[];
   readonly edges: Edge[];
+  refetch: () => void;
 };
 
 const EDGE_COLOR = "#C5D4F9";
@@ -57,7 +58,7 @@ const parseFundingGraph = (
 };
 
 export const useFundsFlow = (sourceAddress: ChainAddress): FundsFlowData => {
-  const { isLoading, isError, data } = useQuery({
+  const { isLoading, isError, data, refetch } = useQuery({
     queryKey: ["funding"],
     queryFn: async () => {
       const data = await getFundingGraph(sourceAddress);
@@ -70,6 +71,7 @@ export const useFundsFlow = (sourceAddress: ChainAddress): FundsFlowData => {
   const graph = getGroupLayout(nodes, edges, "LR");
 
   return {
+    refetch,
     isLoading,
     isError,
     nodes: graph.nodes,

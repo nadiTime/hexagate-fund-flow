@@ -12,7 +12,8 @@ const sourceChainAddress: ChainAddress = {
 };
 
 export default function Dashboard() {
-  const { isLoading, isError, nodes, edges } = useFundsFlow(sourceChainAddress);
+  const { isLoading, isError, nodes, edges, refetch } =
+    useFundsFlow(sourceChainAddress);
 
   return (
     <div
@@ -27,8 +28,15 @@ export default function Dashboard() {
       }}
     >
       {isLoading && <Spinner />}
-      {isError && <h1>Error...</h1>}
-      {!isLoading && nodes.length === 0 && <h1>No data...</h1>}
+      {isError && (
+        <div>
+          <h1>Something went wrong.</h1>
+          <button style={{ textDecoration: "underline" }} onClick={refetch}>
+            {">>"}Try again
+          </button>
+        </div>
+      )}
+      {!isLoading && !isError && nodes.length === 0 && <h1>No data...</h1>}
       {nodes.length > 0 && (
         <div style={{ height: "80%", width: "80%" }}>
           <FlowChart initialNodes={nodes} initialEdges={edges} />

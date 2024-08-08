@@ -13,5 +13,10 @@ export const getFundingGraph = async (
   const res = await fetch(
     `${API_SERVER}/api/v1/funding/graph/${source.chainId}/${source.address}`
   );
+
+  if (res.status !== 200) {
+    console.log(await res.json());
+    throw new Error("Failed to fetch funding graph");
+  }
   return res.json();
 };
