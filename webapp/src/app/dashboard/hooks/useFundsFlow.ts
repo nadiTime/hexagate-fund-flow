@@ -21,6 +21,7 @@ const parseFundingGraph = (
     let sourceNode = nodes.find((node) => node.id === edge.source.address);
     if (!sourceNode) {
       sourceNode = {
+        type: "fundNode",
         position: { x: 0, y: 0 },
         id: edge.source.address,
         data: { label: edge.source.address, ...edge.source },
@@ -31,6 +32,7 @@ const parseFundingGraph = (
     let targetNode = nodes.find((node) => node.id === edge.dest.address);
     if (!targetNode) {
       targetNode = {
+        type: "fundNode",
         position: { x: 0, y: 0 },
         id: edge.dest.address,
         data: { label: edge.dest.address, ...edge.dest },
