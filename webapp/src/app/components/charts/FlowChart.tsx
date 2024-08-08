@@ -1,13 +1,13 @@
-import React, { FC, memo } from "react";
+import React, { FC, memo, useCallback, useState } from "react";
 import {
+  applyEdgeChanges,
+  applyNodeChanges,
   Edge,
+  EdgeChange,
   FitViewOptions,
   Node,
-  OnEdgesChange,
-  OnNodesChange,
+  NodeChange,
   ReactFlow,
-  useEdgesState,
-  useNodesState,
 } from "reactflow";
 import {
   customEdges,
@@ -19,28 +19,37 @@ const fitViewOptions: FitViewOptions = {
 };
 
 type FlowChartProps = {
-  nodes: Node[];
-  edges: Edge[];
-  onNodesChange: OnNodesChange;
-  onEdgesChange: OnEdgesChange;
+  initialNodes: Node[];
+  initialEdges: Edge[];
   className?: string;
   preventScrolling?: boolean;
   children?: JSX.Element | JSX.Element[];
 };
 
 const FlowChart: FC<FlowChartProps> = ({
-  nodes,
-  edges,
+  initialEdges,
+  initialNodes,
   className,
   children,
 }) => {
-  const [nodesState, setNodes, onNodesChange] = useNodesState(nodes);
-  const [edgesState, setEdges, onEdgesChange] = useEdgesState(edges);
+  const [nodes, setNodes] = useState(initialNodes);
+  const [edges, setEdges] = useState(initialEdges);
+
+  const onNodesChange = useCallback(
+    (changes: NodeChange[]) =>
+      setNodes((nds) => applyNodeChanges(changes, nds)),
+    []
+  );
+  const onEdgesChange = useCallback(
+    (changes: EdgeChange[]) =>
+      setEdges((eds) => applyEdgeChanges(changes, eds)),
+    []
+  );
 
   return (
     <ReactFlow
-      nodes={nodesState}
-      edges={edgesState}
+      nodes={nodes}
+      edges={edges}
       fitView
       fitViewOptions={fitViewOptions}
       onNodesChange={onNodesChange}
