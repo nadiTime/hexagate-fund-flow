@@ -3,7 +3,7 @@ import { ChainAddress } from "@/app/types/chainAddress";
 import { FundingResData } from "@/app/types/fundingRecord";
 import { getGroupLayout } from "@/app/utils/getGroupLayout";
 import { useQuery } from "@tanstack/react-query";
-import { Edge, Node } from "reactflow";
+import { Edge, MarkerType, Node } from "reactflow";
 
 type FundsFlowData = {
   readonly isLoading?: boolean;
@@ -11,6 +11,8 @@ type FundsFlowData = {
   readonly nodes: Node[];
   readonly edges: Edge[];
 };
+
+const EDGE_COLOR = "#C5D4F9";
 
 const parseFundingGraph = (
   data: FundingResData
@@ -43,6 +45,11 @@ const parseFundingGraph = (
       id: `${sourceNode.id}-${targetNode.id}`,
       source: sourceNode.id,
       target: targetNode.id,
+      markerEnd: {
+        type: MarkerType.ArrowClosed,
+        color: EDGE_COLOR,
+      },
+      style: { stroke: EDGE_COLOR },
     });
   });
 
