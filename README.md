@@ -51,8 +51,10 @@ Feel free to reach out and ask any questions, at any time.
 
 # Nadi Readme
 
+in root folder run `npm install` to install the dependencies.
+
 `cd node-server` and run `npm install` to install the dependencies.
-then run `npm run dev` to start the server.
 
 `cd webapp` and run `npm install` to install the dependencies.
-then run `npm run dev` to start the server.
+
+`npm run dev` in root folder to run the server and the webapp.
