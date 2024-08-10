@@ -15,19 +15,36 @@ type FundsFlowData = {
 
 const EDGE_COLOR = "#C5D4F9";
 
+const fundNodeProps = {
+  type: "fundNode",
+  position: { x: 0, y: 0 },
+};
+
 const parseFundingGraph = (
-  data: FundingResData
+  data: FundingResData,
+  sourceAddress: ChainAddress
 ): { nodes: Node[]; edges: Edge[] } => {
   const nodes: Node[] = [];
   const edges: Edge[] = [];
+  nodes.push({
+    id: sourceAddress.address,
+    data: {
+      label: sourceAddress.address,
+      ...sourceAddress,
+      isSource: true,
+    },
+    ...fundNodeProps,
+  });
   data.edges.forEach((edge) => {
     let sourceNode = nodes.find((node) => node.id === edge.source.address);
     if (!sourceNode) {
       sourceNode = {
-        type: "fundNode",
-        position: { x: 0, y: 0 },
         id: edge.source.address,
-        data: { label: edge.source.address, ...edge.source },
+        data: {
+          label: edge.source.address,
+          ...edge.source,
+        },
+        ...fundNodeProps,
       };
       nodes.push(sourceNode);
     }
@@ -35,10 +52,12 @@ const parseFundingGraph = (
     let targetNode = nodes.find((node) => node.id === edge.dest.address);
     if (!targetNode) {
       targetNode = {
-        type: "fundNode",
-        position: { x: 0, y: 0 },
         id: edge.dest.address,
-        data: { label: edge.dest.address, ...edge.dest },
+        data: {
+          label: edge.dest.address,
+          ...edge.dest,
+        },
+        ...fundNodeProps,
       };
       nodes.push(targetNode);
     }
@@ -62,7 +81,7 @@ export const useFundsFlow = (sourceAddress: ChainAddress): FundsFlowData => {
     queryKey: ["funding"],
     queryFn: async () => {
       const data = await getFundingGraph(sourceAddress);
-      return parseFundingGraph(data);
+      return parseFundingGraph(data, sourceAddress);
     },
   });
 
